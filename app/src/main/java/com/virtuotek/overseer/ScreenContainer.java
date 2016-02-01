@@ -10,6 +10,6 @@ import android.widget.FrameLayout;
  */
 public class ScreenContainer extends FrameLayout {
     public ScreenContainer(Activity activity, AttributeSet attrs) {
-        super(activity, attrs);
+        super(activity, attrs, 0);
     }
 }
