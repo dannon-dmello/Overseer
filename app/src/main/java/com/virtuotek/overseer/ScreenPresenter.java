@@ -11,7 +11,7 @@ public abstract class ScreenPresenter {
      * Ideally this method will call your biz layer to receive data and set it on your view
      * Goes without saying, but Don't write any blocking code on this thread.
      *
-     * @param screen
+     * @param screen the Screen which should be populated
      */
     public abstract void populateView(Screen screen);
 }

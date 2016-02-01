@@ -15,3 +15,18 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+-keep class com.virtuotek.overseer.** { *; }
+
+## Square Otto specific rules ##
+## https://square.github.io/otto/ ##
+-keepattributes *Annotation*
+-keepclassmembers class ** {
+    @com.squareup.otto.Subscribe public *;
+    @com.squareup.otto.Produce public *;
+}
+
+
+## TransitionsEverywhere ##
+-keep class com.transitionseverywhere.** { *; }
+-keep class com.transitionseverywhere.**.** { *; }

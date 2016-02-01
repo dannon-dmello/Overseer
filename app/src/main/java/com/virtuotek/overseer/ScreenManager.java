@@ -9,8 +9,7 @@ import com.transitionseverywhere.TransitionManager;
 import java.util.Stack;
 
 /**
- * sCreated by Dannon(danno99@gmail.com) on 25/01/16.
- * <p/>
+ * Created by Dannon(danno99@gmail.com) on 25/01/16.
  * The Overseer. Manages all the "Screens", including the transitioning between them, the backstack etc.
  */
 public class ScreenManager {
@@ -28,23 +27,23 @@ public class ScreenManager {
     /**
      * Navigate to the next Screen
      *
-     * @param screen
+     * @param screen                  the screen to transition to
      * @param bringToFrontIfExists    if it exists in the history stack, all screen over it will be cleared and it will be brought to the front
-     * @param transitionAnimationType
+     * @param transitionAnimationType specify from one of the inbuilt transitions
      */
-    public void goToScreen(Screen screen, boolean bringToFrontIfExists, TransitionAnimationType transitionAnimationType) {
+    public void goToScreen(Screen screen, boolean bringToFrontIfExists, boolean addToHistoryStack, TransitionAnimationType transitionAnimationType) {
         int pos = historyStack.search(screen);
         if (bringToFrontIfExists && pos > -1) {
             popTillPosition(pos);
         }
-        switchToScreen(screen, true, transitionAnimationType);
+        switchToScreen(screen, addToHistoryStack, transitionAnimationType);
     }
 
     /**
      * Returns true if the history stack contains a screen and it has successfully navigated back.
      * Returns false if there are no more screens in the stack
      *
-     * @return
+     * @return if back is handled or not
      */
     public boolean goBack() {
         if (historyStack.size() > 0) {

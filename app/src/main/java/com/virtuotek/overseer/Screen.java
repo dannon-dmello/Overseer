@@ -1,6 +1,6 @@
 package com.virtuotek.overseer;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +10,17 @@ import android.view.View;
  * Represents a self contained GUI Screen.
  */
 public abstract class Screen {
+    protected Activity activity;
     protected LayoutInflater layoutInflater;
     protected ScreenPresenter screenPresenter;
     private int layoutResourceId;
     private View view;
 
 
-    public Screen(Context context, int layoutResourceId, ScreenPresenter screenPresenter) {
+    public Screen(Activity activity, int layoutResourceId, ScreenPresenter screenPresenter) {
+        this.activity = activity;
         this.layoutResourceId = layoutResourceId;
-        this.layoutInflater = LayoutInflater.from(context);
+        this.layoutInflater = LayoutInflater.from(activity);
         this.screenPresenter = screenPresenter;
     }
 
@@ -51,6 +53,7 @@ public abstract class Screen {
         layoutInflater = null;
         layoutResourceId = 0;
         screenPresenter = null;
+        activity = null;
     }
 
     public abstract void onViewCreated();
