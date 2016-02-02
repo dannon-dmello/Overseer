@@ -1,5 +1,6 @@
 package com.virtuotek.overseer;
 
+
 import android.content.Context;
 import android.util.AttributeSet;
 import android.widget.FrameLayout;
@@ -9,7 +10,9 @@ import android.widget.FrameLayout;
  * Main screen container. Will only display one active screen at a time. Place this is your main activity layout
  */
 public class ScreenContainer extends FrameLayout {
+
+
     public ScreenContainer(Context context, AttributeSet attrs) {
-        super(context, attrs, 0);
+        super(context, attrs);
     }
 }

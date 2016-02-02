@@ -24,6 +24,9 @@ public abstract class Screen {
         this.screenPresenter = screenPresenter;
     }
 
+    public Activity getActivity() {
+        return activity;
+    }
 
     public View getView() {
         return view;
