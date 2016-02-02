@@ -31,12 +31,12 @@ public class ScreenManager {
      * @param bringToFrontIfExists    if it exists in the history stack, all screen over it will be cleared and it will be brought to the front
      * @param transitionAnimationType specify from one of the inbuilt transitions
      */
-    public void goToScreen(Screen screen, boolean bringToFrontIfExists, boolean addToHistoryStack, TransitionAnimationType transitionAnimationType) {
+    public void goToScreen(Screen screen, boolean bringToFrontIfExists, TransitionAnimationType transitionAnimationType) {
         int pos = historyStack.search(screen);
         if (bringToFrontIfExists && pos > -1) {
             popTillPosition(pos);
         }
-        switchToScreen(screen, addToHistoryStack, transitionAnimationType);
+        switchToScreen(screen, false, transitionAnimationType);
     }
 
     /**
@@ -47,19 +47,19 @@ public class ScreenManager {
      */
     public boolean goBack() {
         if (historyStack.size() > 0) {
-            switchToScreen(historyStack.pop(), false, TransitionAnimationType.RIGHT_TO_LEFT);
+            switchToScreen(historyStack.pop(), true, TransitionAnimationType.RIGHT_TO_LEFT);
             return true;
         }
         return false;
     }
 
 
-    private void switchToScreen(Screen newScreen, boolean addToStack, TransitionAnimationType transitionAnimationType) {
+    private void switchToScreen(Screen newScreen, boolean goingBack, TransitionAnimationType transitionAnimationType) {
         newScreen.create();
         if (currentScreen != null) {
-            final Scene scene = new Scene(screenContainer, newScreen.getView());
+            final Scene scene = new Scene(screenContainer, newScreen.view);
             TransitionManager.go(scene, TransitionAnimation.getTransition(transitionAnimationType));
-            if (addToStack) {
+            if (currentScreen.addToHistoryStack && !goingBack) {
                 currentScreen.destroyView();
                 historyStack.push(currentScreen);
             } else {
@@ -67,7 +67,7 @@ public class ScreenManager {
                 currentScreen = null;
             }
         } else {
-            screenContainer.addView(newScreen.getView());
+            screenContainer.addView(newScreen.view);
         }
         currentScreen = newScreen;
     }

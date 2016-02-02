@@ -10,26 +10,24 @@ import android.view.View;
  * Represents a self contained GUI Screen.
  */
 public abstract class Screen {
+    public View view;
+    public boolean addToHistoryStack;
     protected Activity activity;
     protected LayoutInflater layoutInflater;
     protected ScreenPresenter screenPresenter;
     private int layoutResourceId;
-    private View view;
 
 
-    public Screen(Activity activity, int layoutResourceId, ScreenPresenter screenPresenter) {
+    public Screen(Activity activity, int layoutResourceId, ScreenPresenter screenPresenter, boolean addToHistoryStack) {
         this.activity = activity;
         this.layoutResourceId = layoutResourceId;
         this.layoutInflater = LayoutInflater.from(activity);
         this.screenPresenter = screenPresenter;
+        this.addToHistoryStack = addToHistoryStack;
     }
 
     public Activity getActivity() {
         return activity;
-    }
-
-    public View getView() {
-        return view;
     }
 
 
