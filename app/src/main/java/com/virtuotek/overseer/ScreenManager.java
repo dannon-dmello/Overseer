@@ -57,14 +57,16 @@ public class ScreenManager {
     private void switchToScreen(Screen newScreen, boolean goingBack, TransitionAnimationType transitionAnimationType) {
         newScreen.create();
         if (currentScreen != null) {
-            final Scene scene = new Scene(screenContainer, newScreen.view);
-            TransitionManager.go(scene, TransitionAnimation.getTransition(transitionAnimationType));
-            if (currentScreen.addToHistoryStack && !goingBack) {
-                currentScreen.destroyView();
-                historyStack.push(currentScreen);
-            } else {
-                currentScreen.destroy();
-                currentScreen = null;
+            if (!currentScreen.equals(newScreen)) {
+                final Scene scene = new Scene(screenContainer, newScreen.view);
+                TransitionManager.go(scene, TransitionAnimation.getTransition(transitionAnimationType));
+                if (currentScreen.addToHistoryStack && !goingBack) {
+                    currentScreen.destroyView();
+                    historyStack.push(currentScreen);
+                } else {
+                    currentScreen.destroy();
+                    currentScreen = null;
+                }
             }
         } else {
             screenContainer.addView(newScreen.view);
