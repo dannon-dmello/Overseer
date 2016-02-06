@@ -12,22 +12,22 @@ import android.view.View;
 public abstract class Screen {
     public View view;
     public boolean addToHistoryStack;
-    protected Activity activity;
-    protected LayoutInflater layoutInflater;
+    public Activity activity;
     protected ScreenPresenter screenPresenter;
     private int layoutResourceId;
 
 
+    /**
+     * @param activity          Activity hosting this screen
+     * @param layoutResourceId  layout file for this screen
+     * @param screenPresenter   responsible for populating this screen
+     * @param addToHistoryStack if false, will not be added to history stack. Ideal for full screen dialog like screens, like an info or cart screen
+     */
     public Screen(Activity activity, int layoutResourceId, ScreenPresenter screenPresenter, boolean addToHistoryStack) {
         this.activity = activity;
         this.layoutResourceId = layoutResourceId;
-        this.layoutInflater = LayoutInflater.from(activity);
         this.screenPresenter = screenPresenter;
         this.addToHistoryStack = addToHistoryStack;
-    }
-
-    public Activity getActivity() {
-        return activity;
     }
 
 
@@ -39,7 +39,7 @@ public abstract class Screen {
         onViewDestroyed();
     }
 
-    void create() {
+    void create(LayoutInflater layoutInflater) {
         if (view == null) {
             view = layoutInflater.inflate(layoutResourceId, null);
         }
@@ -51,7 +51,6 @@ public abstract class Screen {
 
     void destroy() {
         destroyView();
-        layoutInflater = null;
         layoutResourceId = 0;
         screenPresenter = null;
         activity = null;
