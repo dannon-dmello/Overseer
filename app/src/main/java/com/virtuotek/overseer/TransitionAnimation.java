@@ -3,6 +3,8 @@ package com.virtuotek.overseer;
 import android.view.Gravity;
 
 import com.transitionseverywhere.AutoTransition;
+import com.transitionseverywhere.ChangeImageTransform;
+import com.transitionseverywhere.ChangeTransform;
 import com.transitionseverywhere.Explode;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Slide;
@@ -36,7 +38,14 @@ class TransitionAnimation {
                 transition = new Explode();
                 transition.setDuration(200);
                 return transition;
-
+            case IMAGE_TRANSFORM:
+                transition = new ChangeImageTransform();
+                transition.setDuration(200);
+                return transition;
+            case CHANGE_TRANSFORM:
+                transition = new ChangeTransform();
+                transition.setDuration(200);
+                return transition;
             default:
                 transition = new AutoTransition();
                 return transition;
