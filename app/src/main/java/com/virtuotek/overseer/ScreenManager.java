@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.inputmethod.InputMethodManager;
 
 import com.transitionseverywhere.Scene;
+import com.transitionseverywhere.Transition;
 import com.transitionseverywhere.TransitionManager;
 
 import java.util.Stack;
@@ -21,6 +22,7 @@ public class ScreenManager {
     private Stack<Screen> historyStack;
     private ScreenContainer screenContainer;
     private LayoutInflater layoutInflater;
+    private Transition lastTransition;
 
     public ScreenManager(Activity overseerActivity, ScreenContainer screenContainer) {
         this.overseerActivity = overseerActivity;
@@ -48,7 +50,22 @@ public class ScreenManager {
         if (bringToFrontIfExists && pos > -1) {
             popTillPosition(pos);
         }
-        switchToScreen(screen, false, transitionAnimationType);
+        switchToScreen(screen, false, TransitionAnimation.getTransition(transitionAnimationType));
+    }
+
+    /**
+     * Navigate to the next Screen
+     *
+     * @param screen               the screen to transition to
+     * @param bringToFrontIfExists if it exists in the history stack, all screens over it will be cleared and it will be brought to the front
+     * @param customTransition     Your custom transition between the screens
+     */
+    public void goToScreen(Screen screen, boolean bringToFrontIfExists, Transition customTransition) {
+        int pos = historyStack.search(screen);
+        if (bringToFrontIfExists && pos > -1) {
+            popTillPosition(pos);
+        }
+        switchToScreen(screen, false, customTransition);
     }
 
     /**
@@ -59,19 +76,24 @@ public class ScreenManager {
      */
     public boolean goBack() {
         if (historyStack.size() > 0) {
-            switchToScreen(historyStack.pop(), true, TransitionAnimationType.RIGHT_TO_LEFT);
+            switchToScreen(historyStack.pop(), true, lastTransition != null ? lastTransition : TransitionAnimation.getTransition(TransitionAnimationType.RIGHT_TO_LEFT));
             return true;
         }
         return false;
     }
 
-    private void switchToScreen(Screen newScreen, boolean goingBack, TransitionAnimationType transitionAnimationType) {
+    private void switchToScreen(Screen newScreen, boolean goingBack, Transition transition) {
+        if (lastTransition != transition) {
+            lastTransition = transition;
+        } else {
+            lastTransition = TransitionAnimation.getTransition(TransitionAnimationType.RIGHT_TO_LEFT);
+        }
         hideSoftKeyboard(overseerActivity);
         newScreen.create(layoutInflater);
         if (currentScreen != null) {
             if (!currentScreen.equals(newScreen)) {
                 final Scene scene = new Scene(screenContainer, newScreen.view);
-                TransitionManager.go(scene, TransitionAnimation.getTransition(transitionAnimationType));
+                TransitionManager.go(scene, transition);
                 if (currentScreen.addToHistoryStack && !goingBack) {
                     currentScreen.destroyView();
                     historyStack.push(currentScreen);
@@ -148,5 +170,6 @@ public class ScreenManager {
      */
     public void clearHistory() {
         historyStack.clear();
+        lastTransition = null;
     }
 }

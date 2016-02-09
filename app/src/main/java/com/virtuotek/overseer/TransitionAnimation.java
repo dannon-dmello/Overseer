@@ -3,53 +3,49 @@ package com.virtuotek.overseer;
 import android.view.Gravity;
 
 import com.transitionseverywhere.AutoTransition;
+import com.transitionseverywhere.ChangeBounds;
 import com.transitionseverywhere.ChangeImageTransform;
-import com.transitionseverywhere.ChangeTransform;
 import com.transitionseverywhere.Explode;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Slide;
 import com.transitionseverywhere.Transition;
+import com.transitionseverywhere.TransitionSet;
 
 /**
  * Created by Danny on 25/01/16.
  */
 class TransitionAnimation {
+    private static final int DEFAULT_TRANSITION_SPEED = 300;
 
-    public static Transition getTransition(TransitionAnimationType transitionAnimationType) {
+    public static TransitionSet getTransition(TransitionAnimationType transitionAnimationType) {
         Transition transition;
         switch (transitionAnimationType) {
             case LEFT_TO_RIGHT:
                 transition = new Slide(Gravity.LEFT);
-                transition.setDuration(200);
-                return transition;
+                break;
             case RIGHT_TO_LEFT:
                 transition = new Slide(Gravity.RIGHT);
-                transition.setDuration(200);
-                return transition;
+                break;
             case BOTTOM_TO_TOP:
                 transition = new Slide(Gravity.BOTTOM);
-                transition.setDuration(200);
-                return transition;
+                break;
             case FADE:
                 transition = new Fade();
-                transition.setDuration(200);
-                return transition;
+                break;
             case EXPLODE:
                 transition = new Explode();
-                transition.setDuration(200);
-                return transition;
-            case IMAGE_TRANSFORM:
-                transition = new ChangeImageTransform();
-                transition.setDuration(200);
-                return transition;
-            case CHANGE_TRANSFORM:
-                transition = new ChangeTransform();
-                transition.setDuration(200);
-                return transition;
+                break;
             default:
                 transition = new AutoTransition();
-                return transition;
+                break;
         }
 
+        TransitionSet transitionSet = new TransitionSet();
+        transitionSet.addTransition(transition);
+        transitionSet.addTransition(new ChangeBounds());
+        transitionSet.addTransition(new ChangeImageTransform());
+        transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
+        transitionSet.setDuration(DEFAULT_TRANSITION_SPEED);
+        return transitionSet;
     }
 }

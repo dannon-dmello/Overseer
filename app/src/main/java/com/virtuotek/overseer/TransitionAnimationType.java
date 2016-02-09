@@ -5,5 +5,5 @@ package com.virtuotek.overseer;
  */
 public enum TransitionAnimationType {
 
-    NONE, LEFT_TO_RIGHT, RIGHT_TO_LEFT, BOTTOM_TO_TOP, EXPLODE, FADE, IMAGE_TRANSFORM, CHANGE_TRANSFORM;
+    NONE, LEFT_TO_RIGHT, RIGHT_TO_LEFT, BOTTOM_TO_TOP, EXPLODE, FADE;
 }
