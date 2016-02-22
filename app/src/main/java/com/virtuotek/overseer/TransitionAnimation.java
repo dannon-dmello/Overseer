@@ -3,8 +3,6 @@ package com.virtuotek.overseer;
 import android.view.Gravity;
 
 import com.transitionseverywhere.AutoTransition;
-import com.transitionseverywhere.ChangeBounds;
-import com.transitionseverywhere.ChangeImageTransform;
 import com.transitionseverywhere.Explode;
 import com.transitionseverywhere.Fade;
 import com.transitionseverywhere.Slide;
@@ -42,8 +40,8 @@ class TransitionAnimation {
 
         TransitionSet transitionSet = new TransitionSet();
         transitionSet.addTransition(transition);
-        transitionSet.addTransition(new ChangeBounds());
-        transitionSet.addTransition(new ChangeImageTransform());
+//        transitionSet.addTransition(new ChangeBounds());
+//        transitionSet.addTransition(new ChangeImageTransform());
         transitionSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
         transitionSet.setDuration(DEFAULT_TRANSITION_SPEED);
         return transitionSet;
