@@ -91,17 +91,17 @@ public class ScreenManager {
         hideSoftKeyboard(overseerActivity);
         newScreen.create(layoutInflater);
         if (currentScreen != null) {
-            if (!currentScreen.equals(newScreen)) {
-                final Scene scene = new Scene(screenContainer, newScreen.view);
-                TransitionManager.go(scene, transition);
-                if (currentScreen.addToHistoryStack && !goingBack) {
-                    currentScreen.destroyView();
-                    historyStack.push(currentScreen);
-                } else {
-                    currentScreen.destroy();
-                    currentScreen = null;
-                }
+            // if (!currentScreen.equals(newScreen)) {
+            final Scene scene = new Scene(screenContainer, newScreen.view);
+            TransitionManager.go(scene, transition);
+            if (currentScreen.addToHistoryStack && !goingBack) {
+                currentScreen.destroyView();
+                historyStack.push(currentScreen);
+            } else {
+                currentScreen.destroy();
+                currentScreen = null;
             }
+            // }
         } else {
             screenContainer.addView(newScreen.view);
         }
