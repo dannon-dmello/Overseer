@@ -13,6 +13,7 @@ public abstract class Screen {
     public View view;
     public boolean addToHistoryStack;
     public Activity activity;
+    public boolean allowMultipleInstances;
     protected ScreenPresenter screenPresenter;
     private int layoutResourceId;
 
@@ -37,6 +38,7 @@ public abstract class Screen {
             view = null;
         }
         onViewDestroyed();
+        screenPresenter.cleanup();
     }
 
     void create(LayoutInflater layoutInflater) {
@@ -51,6 +53,7 @@ public abstract class Screen {
 
     void destroy() {
         destroyView();
+        screenPresenter.destroy();
         layoutResourceId = 0;
         screenPresenter = null;
         activity = null;

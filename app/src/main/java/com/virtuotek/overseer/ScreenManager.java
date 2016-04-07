@@ -82,6 +82,18 @@ public class ScreenManager {
         return false;
     }
 
+    public boolean returnValue(Object value, int requestCode) {
+        if (historyStack.size() > 0) {
+            final Screen prevScreen = historyStack.pop();
+            if (prevScreen.screenPresenter instanceof ReturnValueRecipient) {
+                ((ReturnValueRecipient) prevScreen.screenPresenter).onValueReturned(value, requestCode);
+            }
+            switchToScreen(prevScreen, true, lastTransition != null ? lastTransition : TransitionAnimation.getTransition(TransitionAnimationType.RIGHT_TO_LEFT));
+        }
+
+        return false;
+    }
+
     private void switchToScreen(Screen newScreen, boolean goingBack, Transition transition) {
         if (lastTransition != transition) {
             lastTransition = transition;
@@ -91,17 +103,17 @@ public class ScreenManager {
         hideSoftKeyboard(overseerActivity);
         newScreen.create(layoutInflater);
         if (currentScreen != null) {
-            // if (!currentScreen.equals(newScreen)) {
-            final Scene scene = new Scene(screenContainer, newScreen.view);
-            TransitionManager.go(scene, transition);
-            if (currentScreen.addToHistoryStack && !goingBack) {
-                currentScreen.destroyView();
-                historyStack.push(currentScreen);
-            } else {
-                currentScreen.destroy();
-                currentScreen = null;
+            if (currentScreen.allowMultipleInstances || !currentScreen.equals(newScreen)) {
+                final Scene scene = new Scene(screenContainer, newScreen.view);
+                TransitionManager.go(scene, transition);
+                if (currentScreen.addToHistoryStack && !goingBack) {
+                    currentScreen.destroyView();
+                    historyStack.push(currentScreen);
+                } else {
+                    currentScreen.destroy();
+                    currentScreen = null;
+                }
             }
-            // }
         } else {
             screenContainer.addView(newScreen.view);
         }
