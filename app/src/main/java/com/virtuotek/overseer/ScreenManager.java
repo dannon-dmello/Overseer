@@ -85,10 +85,11 @@ public class ScreenManager {
     public boolean returnValue(Object value, int requestCode) {
         if (historyStack.size() > 0) {
             final Screen prevScreen = historyStack.pop();
+            switchToScreen(prevScreen, true, lastTransition != null ? lastTransition : TransitionAnimation.getTransition(TransitionAnimationType.RIGHT_TO_LEFT));
             if (prevScreen.screenPresenter instanceof ReturnValueRecipient) {
                 ((ReturnValueRecipient) prevScreen.screenPresenter).onValueReturned(value, requestCode);
             }
-            switchToScreen(prevScreen, true, lastTransition != null ? lastTransition : TransitionAnimation.getTransition(TransitionAnimationType.RIGHT_TO_LEFT));
+
         }
 
         return false;
